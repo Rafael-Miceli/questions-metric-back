@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/question-metrics-api/question-metrics-api.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
