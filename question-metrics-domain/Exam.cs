@@ -6,6 +6,12 @@ namespace question_metrics_domain
 {
     public class Exam
     {
+        public Exam(string name, IEnumerable<Question> questions)
+        {
+            Name = name;
+            Questions = questions;
+        }
+
         public string Name { get; }
         public IEnumerable<Question> Questions { get; }
         public ExamMetrics ExamMetrics => new ExamMetrics(Questions);
@@ -23,8 +29,9 @@ namespace question_metrics_domain
         public int TotalQuestions => Questions.Count();
         public int TotalWrongQuestions => Questions.Count(q => q.IsAnswerWrong);
         public int TotalCorrectQuestions => Questions.Count(q => q.IsAnswerCorrect);
-        public IEnumerable<(string reason, int total)> ReasonsMissedQuestions => Questions.GroupBy(q => q.WhyIsWrong)
+        public IEnumerable<(string Reason, int Total)> ReasonsMissedQuestions => Questions.GroupBy(q => q.WhyIsWrong)
                                                                                             .OrderByDescending(q => q.Count())
                                                                                             .Select(q => (q.Key, q.Count()));
+
     }
 }
