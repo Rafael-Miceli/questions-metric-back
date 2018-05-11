@@ -6,22 +6,24 @@ namespace question_metrics_domain
 {
     public class Exam
     {
-        public Exam(string name, IEnumerable<Question> questions)
+        public Exam(string name, DateTime date, IEnumerable<Question> questions)
         {
             Name = name;
+            Date = date;
             Questions = questions;
         }
 
         public string Name { get; }
+        public DateTime Date { get; }
         public IEnumerable<Question> Questions { get; }
-        public ExamMetrics ExamMetrics => new ExamMetrics(Questions);
+        public ExamMetrics ExamMetrics => new ExamMetrics(new List<Exam>{this});
     }
 
     public class ExamMetrics
     {
-        public ExamMetrics(IEnumerable<Question> questions)
+        public ExamMetrics(IEnumerable<Exam> exams)
         {
-            Questions = questions;    
+            Questions = exams.SelectMany(e => e.Questions);    
         }
 
         public IEnumerable<Question> Questions { get; }
