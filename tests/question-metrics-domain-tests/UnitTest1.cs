@@ -9,7 +9,7 @@ namespace question_metrics_domain_tests
     public class UnitTest1
     {
         [Fact]
-        public void Should_Order_Wrong_Questions_With_Its_Counts()
+        public void Should_Order_Wrong_Questions_With_Its_Counts_In_Exam()
         {
             var questions = new List<Question>{
                 new Question(true, "motivo 1"),
@@ -19,15 +19,52 @@ namespace question_metrics_domain_tests
                 new Question(true, "motivo 3")
             };
 
-            var examMetrics = new ExamMetrics(questions);
+            var exam = new Exam("RS", DateTime.Today, questions);
 
-            Assert.Equal(3, examMetrics.ReasonsMissedQuestions.Count());
+            //var examMetrics = new ExamMetrics(questions);
+
+            Assert.Equal(3, exam.ExamMetrics.ReasonsMissedQuestions.Count());
+            Assert.Equal("motivo 1", exam.ExamMetrics.ReasonsMissedQuestions.First().Reason);
+            Assert.Equal(2, exam.ExamMetrics.ReasonsMissedQuestions.First().Total);
+            Assert.Equal("motivo 3", exam.ExamMetrics.ReasonsMissedQuestions.Skip(1).First().Reason);
+            Assert.Equal(2, exam.ExamMetrics.ReasonsMissedQuestions.Skip(1).First().Total);
+            Assert.Equal("motivo 2", exam.ExamMetrics.ReasonsMissedQuestions.Skip(2).First().Reason);
+            Assert.Equal(1, exam.ExamMetrics.ReasonsMissedQuestions.Skip(2).First().Total);
+        }
+
+        [Fact]
+        public void Should_Order_Wrong_Questions_With_Its_Counts_In_ExamsList()
+        {
+            var questions1 = new List<Question>{
+                new Question(true, "motivo 1"),
+                new Question(true, "motivo 1"),
+                new Question(true, "motivo 2"),
+                new Question(true, "motivo 3"),
+                new Question(true, "motivo 3")
+            };
+
+            var questions2 = new List<Question>{
+                new Question(true, "motivo 1"),
+                new Question(true, "motivo 1"),
+                new Question(true, "motivo 4"),
+                new Question(true, "motivo 2"),
+                new Question(true, "motivo 3")
+            };
+
+            var exam1 = new Exam("RS", DateTime.Today, questions1);
+            var exam2 = new Exam("PR", DateTime.Today, questions2);
+
+            var examMetrics = new ExamMetrics(new List<Exam>{exam1, exam2});
+
+            Assert.Equal(4, examMetrics.ReasonsMissedQuestions.Count());
             Assert.Equal("motivo 1", examMetrics.ReasonsMissedQuestions.First().Reason);
-            Assert.Equal(2, examMetrics.ReasonsMissedQuestions.First().Total);
+            Assert.Equal(4, examMetrics.ReasonsMissedQuestions.First().Total);
             Assert.Equal("motivo 3", examMetrics.ReasonsMissedQuestions.Skip(1).First().Reason);
-            Assert.Equal(2, examMetrics.ReasonsMissedQuestions.Skip(1).First().Total);
+            Assert.Equal(3, examMetrics.ReasonsMissedQuestions.Skip(1).First().Total);
             Assert.Equal("motivo 2", examMetrics.ReasonsMissedQuestions.Skip(2).First().Reason);
-            Assert.Equal(1, examMetrics.ReasonsMissedQuestions.Skip(2).First().Total);
+            Assert.Equal(2, examMetrics.ReasonsMissedQuestions.Skip(2).First().Total);
+            Assert.Equal("motivo 4", examMetrics.ReasonsMissedQuestions.Skip(3).First().Reason);
+            Assert.Equal(1, examMetrics.ReasonsMissedQuestions.Skip(3).First().Total);
         }
     }
 }
