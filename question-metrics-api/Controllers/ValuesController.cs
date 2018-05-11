@@ -3,42 +3,61 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using question_metrics_domain;
+using question_metrics_domain.Interfaces;
 
 namespace question_metrics_api.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class ExamsController : Controller
     {
+        private readonly IExamRepo _examRepo;
+
+        public ExamsController()
+        {
+            _examRepo = null;
+        } 
+
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Route("GetAllExamsNamesAndDates")]
+        public async Task<IActionResult> GetAllExamsNamesAndDates()
         {
-            return new string[] { "value1", "value2" };
+            return Ok((await _examRepo.GetAll())
+                .Select(e => new { 
+                    Title = $"{e.Date} - {e.Name}",
+                    Name = e.Name,
+                    Date = e.Date
+                }));
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        [Route("GetExamByName")]
+        public async Task<IActionResult> GetExamByName([FromQuery]string examName, [FromQuery]DateTime examDate)
         {
-            return "value";
+            return Ok((await _examRepo.GetAll()).FirstOrDefault(e => e.Date == examDate && e.Name == examName));
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<IActionResult> CreateExam([FromBody]Exam exam)
         {
-        }
+            var result = await _examRepo.Insert(exam);
+            if (result.IsSuccess)
+                return Created("", result.Value);
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
+            return BadRequest();
         }
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{examName}/{examDate}")]
+        public async Task<IActionResult> DeleteExam(string examName, DateTime examDate)
         {
+            var result = await _examRepo.Delete(examName, examDate);
+            if (result.IsSuccess)
+                return NoContent();
+
+            return BadRequest();
         }
     }
 }
