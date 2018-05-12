@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Filters;
 
 namespace question_metrics_api
 {
@@ -24,7 +25,8 @@ namespace question_metrics_api
                 .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
                     .ReadFrom.Configuration(hostingContext.Configuration)
                     .Enrich.FromLogContext()
-                    .WriteTo.Console())
+                    .WriteTo.Console()
+                    .Filter.ByExcluding(c => c.MessageTemplate.Text.Contains("HealthChecks")))
                 .Build();
     }
 }
