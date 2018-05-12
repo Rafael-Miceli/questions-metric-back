@@ -25,7 +25,14 @@ namespace question_metrics_api
                 .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
                     .ReadFrom.Configuration(hostingContext.Configuration)
                     .Enrich.FromLogContext()
+                    .Enrich.WithProperty("Stack", "QuestionMetrics")
+                    .Enrich.WithProperty("Service", "Question Metrics API")
                     .WriteTo.Console()
+                    .WriteTo.Logger(lc => 
+                        lc.MinimumLevel.Error()
+                        .WriteTo.Email(fromEmail: "no-reply@questionmetrics.com",
+                                       toEmail: "rafael.miceli@hotmail.com",
+                                       mailServer: "mailhog"))
                     .Filter.ByExcluding(c => c.MessageTemplate.Text.Contains("HealthChecks")))
                 .Build();
     }

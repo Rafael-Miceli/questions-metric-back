@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace question_metrics_api
@@ -28,7 +34,7 @@ namespace question_metrics_api
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Price Store Product Categorizer", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "Exams Metrics", Version = "v1" });
             });
         }
 
@@ -44,7 +50,31 @@ namespace question_metrics_api
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Price Store Product Categorizer V0.1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Exams Metrics V0.1");
+            });
+
+            app.UseExceptionHandler(eh => {
+                eh.Run(
+                    async context => {
+                        context.Response.StatusCode = 500;
+                        context.Response.ContentType = "application/json";
+
+                        var errorCtx = context.Features.Get<IExceptionHandlerFeature>();
+                        if (errorCtx != null)
+                        {
+                            var ex = errorCtx.Error;
+                            Log.Error(ex, "Erro desconhecido");
+
+                            var errorId = Activity.Current?.Id ?? context.TraceIdentifier;
+                            var jsonResponse = JsonConvert.SerializeObject(new 
+                            {
+                                ErrorId = errorId,
+                                Message = "Some kind of error happened in the API."
+                            });
+                            await context.Response.WriteAsync(jsonResponse, Encoding.UTF8);
+                        }
+                    }
+                );
             });
 
             app.UseMvc();
