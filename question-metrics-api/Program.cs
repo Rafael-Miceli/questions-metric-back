@@ -32,7 +32,7 @@ namespace question_metrics_api
                         lc.MinimumLevel.Error()
                         .WriteTo.Email(fromEmail: "no-reply@questionmetrics.com",
                                        toEmail: "rafael.miceli@hotmail.com",
-                                       mailServer: "mailhog"))
+                                       mailServer: "http://localhost:8025"))
                     .Filter.ByExcluding(c => c.MessageTemplate.Text.Contains("HealthChecks")))
                 .Build();
     }
