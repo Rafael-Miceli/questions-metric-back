@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Filters;
+using Serilog.Sinks.Email;
 
 namespace question_metrics_api
 {
@@ -30,9 +31,14 @@ namespace question_metrics_api
                     .WriteTo.Console()
                     .WriteTo.Logger(lc => 
                         lc.MinimumLevel.Error()
-                        .WriteTo.Email(fromEmail: "no-reply@questionmetrics.com",
-                                       toEmail: "rafael.miceli@hotmail.com",
-                                       mailServer: "http://localhost:8025"))
+                        .Enrich.WithProperty("ERROR", "Inside Error!!!")
+                        .WriteTo.Console()
+                        .WriteTo.Email(new EmailConnectionInfo(){
+                            FromEmail = "no-reply@questionmetrics.com",
+                            ToEmail = "rafael.miceli@hotmail.com",
+                            MailServer = "localhost",
+                            Port = 1025
+                        }))
                     .Filter.ByExcluding(c => c.MessageTemplate.Text.Contains("HealthChecks")))
                 .Build();
     }
