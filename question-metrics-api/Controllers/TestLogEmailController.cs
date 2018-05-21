@@ -23,6 +23,8 @@ namespace question_metrics_api.Controllers
             Log.Error("Esta mesnagem de erro deve chegar no e-mail");
             Log.Warning("Esta mensagem de warning não deve chegar no email");            
             
+            throw new Exception("Forçando exceção");
+
             return Ok();
         }
 
