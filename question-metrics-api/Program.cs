@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Events;
 using Serilog.Filters;
 using Serilog.Sinks.Email;
 
@@ -28,6 +29,7 @@ namespace question_metrics_api
                     .Enrich.FromLogContext()
                     .Enrich.WithProperty("Stack", "QuestionMetrics")
                     .Enrich.WithProperty("Service", "Question Metrics API")
+                    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                     .WriteTo.Console()
                     .WriteTo.Logger(lc => 
                         lc.MinimumLevel.Error()
@@ -39,7 +41,7 @@ namespace question_metrics_api
                             MailServer = "localhost",
                             Port = 1025
                         }))
-                    .Filter.ByExcluding(c => c.MessageTemplate.Text.Contains("HealthChecks")))
+                    .Filter.ByExcluding(c => c.MessageTemplate.Text.Contains("swagger")))
                 .Build();
     }
 }
