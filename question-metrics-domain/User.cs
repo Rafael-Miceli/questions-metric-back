@@ -6,13 +6,16 @@ namespace question_metrics_domain
 {
     public class User
     {
-        public User()
+        public User(string name, string password, string email)
         {
+            Name = name;
+            Password = password;
+            Email = email;
         }
 
-        public string Name { get; set; }
-        public string Password { get; set; }
-        public string Email { get; set; }
+        public string Name { get; }
+        public string Password { get; }
+        public string Email { get; }
 
         public List<Exam> Exams { get; }
 
