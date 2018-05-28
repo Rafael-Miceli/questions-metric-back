@@ -13,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using question_metrics_data;
+using question_metrics_domain.Interfaces;
 using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -36,6 +38,8 @@ namespace question_metrics_api
             {
                 c.SwaggerDoc("v1", new Info { Title = "Exams Metrics", Version = "v1" });
             });
+
+            services.AddTransient<IExamRepo, ExamRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

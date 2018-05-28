@@ -13,9 +13,9 @@ namespace question_metrics_api.Controllers
     {
         private readonly IExamRepo _examRepo;
 
-        public ExamsController()
+        public ExamsController(IExamRepo examRepo)
         {
-            _examRepo = null;
+            _examRepo = examRepo;
         } 
 
         // GET api/values
@@ -23,12 +23,19 @@ namespace question_metrics_api.Controllers
         [Route("GetAllExamsNamesAndDates")]
         public async Task<IActionResult> GetAllExamsNamesAndDates()
         {
-            return Ok((await _examRepo.GetAll())
-                .Select(e => new { 
-                    Title = $"{e.Date} - {e.Name}",
-                    Name = e.Name,
-                    Date = e.Date
-                }));
+            var allExams = await _examRepo.GetAll();
+
+            if (!allExams.Any())
+            {                
+                return NotFound("Nenhum exame encontrado");        
+            }  
+
+            return Ok(allExams
+                        .Select(e => new { 
+                            Title = $"{e.Date} - {e.Name}",
+                            Name = e.Name,
+                            Date = e.Date
+            }));            
         }
 
         [HttpGet]
