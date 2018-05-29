@@ -11,7 +11,15 @@ namespace question_metrics_data
     {
         public ExamRepository()
         {
-            _exams = new List<Exam>();
+            _exams = new List<Exam>(){
+                new Exam("TJ Rio Grand do Sul", 
+                new DateTime(2018, 04, 29),
+                new List<Question>{
+                    new Question(1, new CorrectAnswer()),
+                    new Question(2, new CorrectAnswer()),
+                    new Question(3, new WrongAnswer("Motivo 1"))
+                })
+            };
         }
 
         private static List<Exam> _exams;
