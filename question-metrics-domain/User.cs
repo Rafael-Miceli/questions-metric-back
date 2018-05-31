@@ -19,7 +19,9 @@ namespace question_metrics_domain {
 
             TookedExams = new List<Exam> ();
             if (string.IsNullOrEmpty(id))
-                id = new Guid().ToString();
+                id = Guid.NewGuid().ToString();
+
+            Id = id;
         }
 
         public string Id { get; }

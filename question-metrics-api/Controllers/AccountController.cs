@@ -40,10 +40,19 @@ namespace question_metrics_api.Controllers
         }
 
         [HttpGet]
-        [Route("{id: string}")]
+        [Route("id/{id}")]
         public async Task<IActionResult> Get(string id)
         {
             User userInDatabase = await _userRepository.FindById(id);
+
+            return Ok(userInDatabase);
+        }
+
+        [HttpGet]
+        [Route("email/{email}")]
+        public async Task<IActionResult> GetByEmail(string email)
+        {
+            User userInDatabase = await _userRepository.FindByEmail(email);
 
             return Ok(userInDatabase);
         }

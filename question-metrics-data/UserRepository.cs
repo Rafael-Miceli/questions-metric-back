@@ -16,9 +16,8 @@ namespace question_metrics_data
             _users.Add(new User(
                 "Rafael Miceli", 
                 "123456", 
-                "rafael.miceli@hotmail.com", 
-                new DateTime(1989, 12, 07),
-                new Guid().ToString())
+                "rafael.miceli@hotmail.com",
+                new DateTime(1989, 12, 07))
                     );
         }
 
