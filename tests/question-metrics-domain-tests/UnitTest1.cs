@@ -14,9 +14,9 @@ namespace question_metrics_domain_tests
             var questions = new List<Question>{
                 new Question(1, new WrongAnswer("motivo 1")),
                 new Question(1, new WrongAnswer("motivo 1")),
-                new Question(1, new WrongAnswer("motivo 1")),
-                new Question(1, new WrongAnswer("motivo 1")),
-                new Question(1, new WrongAnswer("motivo 1"))
+                new Question(1, new WrongAnswer("motivo 2")),
+                new Question(1, new WrongAnswer("motivo 3")),
+                new Question(1, new WrongAnswer("motivo 3"))
             };
 
             var exam = new Exam("RS", DateTime.Today, questions);
@@ -38,17 +38,17 @@ namespace question_metrics_domain_tests
             var questions1 = new List<Question>{
                 new Question(1, new WrongAnswer("motivo 1")),
                 new Question(1, new WrongAnswer("motivo 1")),
-                new Question(1, new WrongAnswer("motivo 1")),
-                new Question(1, new WrongAnswer("motivo 1")),
-                new Question(1, new WrongAnswer("motivo 1"))
+                new Question(1, new WrongAnswer("motivo 2")),
+                new Question(1, new WrongAnswer("motivo 3")),
+                new Question(1, new WrongAnswer("motivo 3"))
             };
 
             var questions2 = new List<Question>{
                 new Question(2, new WrongAnswer("motivo 1")),
                 new Question(2, new WrongAnswer("motivo 1")),
-                new Question(2, new WrongAnswer("motivo 1")),
-                new Question(2, new WrongAnswer("motivo 1")),
-                new Question(2, new WrongAnswer("motivo 1"))
+                new Question(2, new WrongAnswer("motivo 4")),
+                new Question(2, new WrongAnswer("motivo 2")),
+                new Question(2, new WrongAnswer("motivo 3"))
             };
 
             var exam1 = new Exam("RS", DateTime.Today, questions1);

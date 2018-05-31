@@ -15,14 +15,13 @@ namespace question_metrics_domain
 
     public class WrongAnswer : Answer
     {
-        public WrongAnswer(string whyIsWrong)
-        {
+        public WrongAnswer(string whyIsWrong) =>
             WhyIsWrong = whyIsWrong;
-        }
 
         public override bool IsAnswerWrong => true;
 
-        public override string WhyIsWrong { get => WhyIsWrong; protected set => WhyIsWrong = value; }
+        private string whyIsWrong;
+        public override string WhyIsWrong { get => whyIsWrong; protected set => whyIsWrong = value; }
     }
 
     public class CorrectAnswer : Answer
