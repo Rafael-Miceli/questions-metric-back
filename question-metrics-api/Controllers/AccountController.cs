@@ -10,10 +10,12 @@ namespace question_metrics_api.Controllers
     public class AccountController : Controller
     {
         private readonly IUserRepository _userRepository;
+        private readonly IExamRepo _examRepo;
 
-        public AccountController(IUserRepository userRepository)
+        public AccountController(IUserRepository userRepository, IExamRepo examRepo)
         {
             _userRepository = userRepository;
+            _examRepo = examRepo;
         }
 
         //Cenários de teste
@@ -37,6 +39,30 @@ namespace question_metrics_api.Controllers
             await _userRepository.Insert(newUser);
 
             return Created("", newUser.Id);
+        }
+
+        //Cenários de teste
+        //* Identificador de usuário é o e-mail */
+        //?Se usuário ja existir na base com mesmo e-mail
+        [HttpPut]
+        [Route("AddTookedExam/{userId}/{examId}")]
+        public async Task<IActionResult> AddExamTooked(string userId, string examId)
+        {
+            User userInDatabase = await _userRepository.FindById(userId);
+
+            if (userInDatabase == null)
+                return NotFound("Usuário não encontrado");
+
+            Exam examInDb = await _examRepo.GetExamById(examId);
+
+            if (examInDb == null)
+                return NotFound("Exame para adicionar ao usuário não encontrado");
+
+            await userInDatabase.AddExam(examInDb);
+
+            await _userRepository.UpdateUser(userInDatabase);
+
+            return NoContent();
         }
 
         [HttpGet]

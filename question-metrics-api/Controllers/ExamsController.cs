@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using question_metrics_api.Dtos;
 using question_metrics_domain;
 using question_metrics_domain.Interfaces;
 
@@ -32,6 +33,7 @@ namespace question_metrics_api.Controllers
 
             return Ok(allExams
                         .Select(e => new { 
+                            Id = e.Id,
                             Title = $"{e.Date} - {e.Name}",
                             Name = e.Name,
                             Date = e.Date
@@ -47,11 +49,11 @@ namespace question_metrics_api.Controllers
 
         // POST api/values
         [HttpPost]
-        public async Task<IActionResult> CreateExam([FromBody]Exam exam)
+        public async Task<IActionResult> CreateExam([FromBody]CreateExamDto examDto)
         {
-            var result = await _examRepo.Insert(exam);
-            if (result.IsSuccess)
-                return Created("", result.Value);
+            // var result = await _examRepo.Insert(exam);
+            // if (result.IsSuccess)
+            //     return Created("", result.Value);
 
             return BadRequest();
         }

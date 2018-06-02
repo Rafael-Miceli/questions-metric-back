@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using NullGuard;
 
 namespace question_metrics_domain {
     public class User {
@@ -10,7 +11,7 @@ namespace question_metrics_domain {
             string password, 
             string email,
             DateTime birth,
-            string id = "") {
+            [AllowNull] string id = "") {
                 
             Name = name;
             Password = password;
@@ -18,6 +19,7 @@ namespace question_metrics_domain {
             Birth = birth;
 
             TookedExams = new List<Exam> ();
+            
             if (string.IsNullOrEmpty(id))
                 id = Guid.NewGuid().ToString();
 

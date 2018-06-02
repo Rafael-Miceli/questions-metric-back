@@ -11,5 +11,6 @@ namespace question_metrics_domain.Interfaces
         Task<IEnumerable<Exam>> GetAll();
         Task<Result<Exam>> Insert(Exam exam);
         Task<Result> Delete(string examName, DateTime examDate);
+        Task<Exam> GetExamById(string examId);
     }
 }

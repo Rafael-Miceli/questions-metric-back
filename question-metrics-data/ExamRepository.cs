@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using question_metrics_domain;
 using question_metrics_domain.Common;
@@ -39,6 +40,11 @@ namespace question_metrics_data
             _exams.Add(exam);
 
             return Result.Ok(exam);
+        }
+
+        public async Task<Exam> GetExamById(string examId)
+        {
+            return _exams.FirstOrDefault(e => e.Id == examId);
         }
     }
 }

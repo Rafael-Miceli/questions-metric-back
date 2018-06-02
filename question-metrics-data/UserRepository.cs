@@ -36,5 +36,11 @@ namespace question_metrics_data
             _users.Add(newUser);
             return newUser.Id;
         }
+
+        public async Task UpdateUser(User userInDatabase)
+        {
+            _users.Remove(_users.FirstOrDefault(u => u.Id == userInDatabase.Id));
+            _users.Add(userInDatabase);
+        }
     }
 }
