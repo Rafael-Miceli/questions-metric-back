@@ -5,6 +5,7 @@ namespace question_metrics_domain
         public static ReasonIsWrong DidntReadProperlyAnswer = new ReasonIsWrong("Me Confundi na leitura da resposta.");
         public static ReasonIsWrong DidntReadProperlyQuestion = new ReasonIsWrong("Me Confundi na leitura da pergunta.");
         public static ReasonIsWrong NotAnswered = new ReasonIsWrong("Não respondida.");
+        public static ReasonIsWrong NotSpecified = new ReasonIsWrong("Não especificado porque errei. Isto não ajuda muito.");
         public static ReasonIsWrong ForgetSubject = new ReasonIsWrong("Esqueci o asunto da matéria.");
 
         //public static ReasonIsWrong CorrectAnswer = new ReasonIsWrong("");

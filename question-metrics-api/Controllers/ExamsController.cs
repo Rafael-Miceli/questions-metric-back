@@ -51,11 +51,18 @@ namespace question_metrics_api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateExam([FromBody]CreateExamDto examDto)
         {
-            // var result = await _examRepo.Insert(exam);
-            // if (result.IsSuccess)
-            //     return Created("", result.Value);
+            var questionsInExam = new List<Question>();
 
-            return BadRequest();
+            for (int questionNum = 0; questionNum < examDto.TotalNumberOfQuestions; questionNum++)
+                questionsInExam.Add(new Question(questionNum + 1, new WrongAnswer(ReasonIsWrong.NotSpecified)));
+            
+            var newExam = new Exam(examDto.Name, examDto.Date, questionsInExam);
+            var result = await _examRepo.Insert(newExam);
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Created("", newExam.Id);            
         }
 
         // DELETE api/values/5
