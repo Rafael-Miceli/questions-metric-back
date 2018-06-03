@@ -38,7 +38,8 @@ namespace question_metrics_domain
         public int TotalQuestions => Questions.Count();
         public int TotalWrongQuestions => Questions.Count(q => q.Answer.IsAnswerWrong);
         public int TotalCorrectQuestions => Questions.Count(q => q.Answer.IsAnswerCorrect);
-        public IEnumerable<(string Reason, int Total)> ReasonsMissedQuestions => Questions.GroupBy(q => q.Answer.WhyIsWrong)
+        public IEnumerable<(string Reason, int Total)> ReasonsMissedQuestions => Questions.Where(q => q.Answer is WrongAnswer)
+                                                                                            .GroupBy(q => q.Answer.WhyIsWrong.Reason)
                                                                                             .OrderByDescending(q => q.Count())
                                                                                             .Select(q => (q.Key, q.Count()));
 

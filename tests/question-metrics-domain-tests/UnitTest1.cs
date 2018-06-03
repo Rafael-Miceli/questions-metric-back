@@ -6,17 +6,22 @@ using System.Collections.Generic;
 
 namespace question_metrics_domain_tests
 {
-    public class UnitTest1
+    public class ExamTests
     {
+        ReasonIsWrong notAnswered = ReasonIsWrong.NotAnswered;
+        ReasonIsWrong readQuestion = ReasonIsWrong.DidntReadProperlyQuestion;
+        ReasonIsWrong readAnswer = ReasonIsWrong.DidntReadProperlyAnswer;
+        ReasonIsWrong forgetSubject = ReasonIsWrong.ForgetSubject;
+
         [Fact]
         public void Should_Order_Wrong_Questions_With_Its_Counts_In_Exam()
         {
             var questions = new List<Question>{
-                new Question(1, new WrongAnswer("motivo 1")),
-                new Question(1, new WrongAnswer("motivo 1")),
-                new Question(1, new WrongAnswer("motivo 2")),
-                new Question(1, new WrongAnswer("motivo 3")),
-                new Question(1, new WrongAnswer("motivo 3"))
+                new Question(1, new WrongAnswer(notAnswered)),
+                new Question(1, new WrongAnswer(notAnswered)),
+                new Question(1, new WrongAnswer(readQuestion)),
+                new Question(1, new WrongAnswer(readAnswer)),
+                new Question(1, new WrongAnswer(readAnswer))
             };
 
             var exam = new Exam("RS", DateTime.Today, questions);
@@ -24,11 +29,11 @@ namespace question_metrics_domain_tests
             //var examMetrics = new ExamMetrics(questions);
 
             Assert.Equal(3, exam.ExamMetrics.ReasonsMissedQuestions.Count());
-            Assert.Equal("motivo 1", exam.ExamMetrics.ReasonsMissedQuestions.First().Reason);
+            Assert.Equal(notAnswered.Reason, exam.ExamMetrics.ReasonsMissedQuestions.First().Reason);
             Assert.Equal(2, exam.ExamMetrics.ReasonsMissedQuestions.First().Total);
-            Assert.Equal("motivo 3", exam.ExamMetrics.ReasonsMissedQuestions.Skip(1).First().Reason);
+            Assert.Equal(readAnswer.Reason, exam.ExamMetrics.ReasonsMissedQuestions.Skip(1).First().Reason);
             Assert.Equal(2, exam.ExamMetrics.ReasonsMissedQuestions.Skip(1).First().Total);
-            Assert.Equal("motivo 2", exam.ExamMetrics.ReasonsMissedQuestions.Skip(2).First().Reason);
+            Assert.Equal(readQuestion.Reason, exam.ExamMetrics.ReasonsMissedQuestions.Skip(2).First().Reason);
             Assert.Equal(1, exam.ExamMetrics.ReasonsMissedQuestions.Skip(2).First().Total);
         }
 
@@ -36,19 +41,19 @@ namespace question_metrics_domain_tests
         public void Should_Order_Wrong_Questions_With_Its_Counts_In_ExamsList()
         {
             var questions1 = new List<Question>{
-                new Question(1, new WrongAnswer("motivo 1")),
-                new Question(1, new WrongAnswer("motivo 1")),
-                new Question(1, new WrongAnswer("motivo 2")),
-                new Question(1, new WrongAnswer("motivo 3")),
-                new Question(1, new WrongAnswer("motivo 3"))
+                new Question(1, new WrongAnswer(notAnswered)),
+                new Question(1, new WrongAnswer(notAnswered)),
+                new Question(1, new WrongAnswer(readQuestion)),
+                new Question(1, new WrongAnswer(readAnswer)),
+                new Question(1, new WrongAnswer(readAnswer))
             };
 
             var questions2 = new List<Question>{
-                new Question(2, new WrongAnswer("motivo 1")),
-                new Question(2, new WrongAnswer("motivo 1")),
-                new Question(2, new WrongAnswer("motivo 4")),
-                new Question(2, new WrongAnswer("motivo 2")),
-                new Question(2, new WrongAnswer("motivo 3"))
+                new Question(2, new WrongAnswer(notAnswered)),
+                new Question(2, new WrongAnswer(notAnswered)),
+                new Question(2, new WrongAnswer(forgetSubject)),
+                new Question(2, new WrongAnswer(readQuestion)),
+                new Question(2, new WrongAnswer(readAnswer)) 
             };
 
             var exam1 = new Exam("RS", DateTime.Today, questions1);
@@ -57,13 +62,13 @@ namespace question_metrics_domain_tests
             var examMetrics = new ExamMetrics(new List<Exam>{exam1, exam2});
 
             Assert.Equal(4, examMetrics.ReasonsMissedQuestions.Count());
-            Assert.Equal("motivo 1", examMetrics.ReasonsMissedQuestions.First().Reason);
+            Assert.Equal(notAnswered.Reason, examMetrics.ReasonsMissedQuestions.First().Reason);
             Assert.Equal(4, examMetrics.ReasonsMissedQuestions.First().Total);
-            Assert.Equal("motivo 3", examMetrics.ReasonsMissedQuestions.Skip(1).First().Reason);
+            Assert.Equal(readAnswer.Reason, examMetrics.ReasonsMissedQuestions.Skip(1).First().Reason);
             Assert.Equal(3, examMetrics.ReasonsMissedQuestions.Skip(1).First().Total);
-            Assert.Equal("motivo 2", examMetrics.ReasonsMissedQuestions.Skip(2).First().Reason);
+            Assert.Equal(readQuestion.Reason, examMetrics.ReasonsMissedQuestions.Skip(2).First().Reason);
             Assert.Equal(2, examMetrics.ReasonsMissedQuestions.Skip(2).First().Total);
-            Assert.Equal("motivo 4", examMetrics.ReasonsMissedQuestions.Skip(3).First().Reason);
+            Assert.Equal(forgetSubject.Reason, examMetrics.ReasonsMissedQuestions.Skip(3).First().Reason);
             Assert.Equal(1, examMetrics.ReasonsMissedQuestions.Skip(3).First().Total);
         }
     }

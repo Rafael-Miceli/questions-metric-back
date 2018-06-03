@@ -18,7 +18,7 @@ namespace question_metrics_data
                 new List<Question>{
                     new Question(1, new CorrectAnswer()),
                     new Question(2, new CorrectAnswer()),
-                    new Question(3, new WrongAnswer("Motivo 1"))
+                    new Question(3, new WrongAnswer(ReasonIsWrong.NotAnswered))
                 })
             };
         }
