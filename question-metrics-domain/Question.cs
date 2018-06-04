@@ -10,7 +10,12 @@ namespace question_metrics_domain
             Answer = answer;
         }
         public int Number { get; }
-        public Answer Answer { get; }
+        public Answer Answer { get; private set; }
+
+        public void UpdateAnswer(Answer answer)
+        {
+            Answer = answer;
+        }
     }    
 }
 

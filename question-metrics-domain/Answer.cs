@@ -1,4 +1,5 @@
 using System;
+using NullGuard;
 
 namespace question_metrics_domain
 {
@@ -6,7 +7,8 @@ namespace question_metrics_domain
     {
         public abstract bool IsAnswerWrong { get; }
         public bool IsAnswerCorrect { get => !IsAnswerWrong; }
-        
+
+        [AllowNull]
         public abstract ReasonIsWrong WhyIsWrong { get; protected set; }
     }
 
@@ -25,6 +27,7 @@ namespace question_metrics_domain
     {
         public override bool IsAnswerWrong => false;
 
+        [AllowNull]
         public override ReasonIsWrong WhyIsWrong { get => null; protected set => throw new NotImplementedException(); }
     }
 }

@@ -18,7 +18,7 @@ namespace question_metrics_data
                 "123456", 
                 "rafael.miceli@hotmail.com",
                 new DateTime(1989, 12, 07))
-                    );
+            );
         }
 
         public async Task<User> FindByEmail(string email)

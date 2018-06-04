@@ -37,6 +37,7 @@ namespace question_metrics_api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Exams Metrics", Version = "v1" });
+                c.DescribeAllEnumsAsStrings();
             });
 
             services.AddTransient<IExamRepo, ExamRepository>();
@@ -55,7 +56,7 @@ namespace question_metrics_api
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Exams Metrics V0.1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Exams Metrics V0.1");                
             });
 
             app.UseExceptionHandler(eh => {

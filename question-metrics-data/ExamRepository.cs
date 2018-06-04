@@ -12,7 +12,7 @@ namespace question_metrics_data
     {
         public ExamRepository()
         {
-            _exams = new List<Exam>(){
+            _exams.Add(
                 new Exam("TJ Rio Grand do Sul", 
                 new DateTime(2018, 04, 29),
                 new List<Question>{
@@ -20,10 +20,10 @@ namespace question_metrics_data
                     new Question(2, new CorrectAnswer()),
                     new Question(3, new WrongAnswer(ReasonIsWrong.NotAnswered))
                 })
-            };
+            );
         }
 
-        private static List<Exam> _exams;
+        private static List<Exam> _exams = new List<Exam>();
 
         public async Task<Result> Delete(string examName, DateTime examDate)
         {

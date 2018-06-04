@@ -1,6 +1,8 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using question_metrics_api.Controllers.Dtos;
+using question_metrics_api.Dtos;
 using question_metrics_domain;
 using question_metrics_domain.Interfaces;
 
@@ -60,6 +62,41 @@ namespace question_metrics_api.Controllers
 
             await userInDatabase.AddExam(examInDb);
 
+            await _userRepository.UpdateUser(userInDatabase);
+
+            return NoContent();
+        }
+
+        //Cenários de teste
+        //* Identificador de usuário é o e-mail */
+        //?Se usuário ja existir na base com mesmo e-mail
+        [HttpPut]
+        [Route("UpdateAnswer/{userId}/{examId}")]
+        public async Task<IActionResult> UpdateAnswer(string userId, string examId, AnswerToUpdateDto answerToUpdate)
+        {
+            User userInDatabase = await _userRepository.FindById(userId);
+
+            if (userInDatabase == null)
+                return NotFound("Usuário não encontrado");
+
+            var examToUpdateAnswer = userInDatabase.TookedExams.FirstOrDefault(e => e.Id == examId);
+
+            if (examToUpdateAnswer == null)
+                return NotFound("Usuário não fez este exame");
+
+            var questionToUpdate = examToUpdateAnswer.Questions.FirstOrDefault(q => q.Number == answerToUpdate.QuestionNumber);
+
+            if (questionToUpdate == null)
+                return NotFound("Questão não existe neste exame");
+
+            if (!answerToUpdate.IsWrong)
+            {
+                questionToUpdate.UpdateAnswer(new CorrectAnswer());
+                return NoContent();                    
+            }  
+
+            questionToUpdate.UpdateAnswer(new WrongAnswer(answerToUpdate.ReasonIsWrong.MapToReason()));
+            
             await _userRepository.UpdateUser(userInDatabase);
 
             return NoContent();
