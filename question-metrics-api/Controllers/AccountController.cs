@@ -72,7 +72,7 @@ namespace question_metrics_api.Controllers
         //?Se usuário ja existir na base com mesmo e-mail
         [HttpPut]
         [Route("UpdateAnswer/{userId}/{examId}")]
-        public async Task<IActionResult> UpdateAnswer(string userId, string examId, AnswerToUpdateDto answerToUpdate)
+        public async Task<IActionResult> UpdateAnswer(string userId, string examId, [FromBody]AnswerToUpdateDto answerToUpdate)
         {
             User userInDatabase = await _userRepository.FindById(userId);
 
