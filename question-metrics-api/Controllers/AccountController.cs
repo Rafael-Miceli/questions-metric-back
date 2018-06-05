@@ -1,10 +1,13 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using question_metrics_api.Controllers.Dtos;
 using question_metrics_api.Dtos;
 using question_metrics_domain;
 using question_metrics_domain.Interfaces;
+using Force.DeepCloner;
 
 namespace question_metrics_api.Controllers
 {
@@ -60,7 +63,7 @@ namespace question_metrics_api.Controllers
             if (examInDb == null)
                 return NotFound("Exame para adicionar ao usuário não encontrado");
 
-            await userInDatabase.AddExam(examInDb);
+            await userInDatabase.AddExam(examInDb.DeepClone());
 
             await _userRepository.UpdateUser(userInDatabase);
 
@@ -120,4 +123,25 @@ namespace question_metrics_api.Controllers
             return Ok(userInDatabase);
         }
     }
+
+    // public static class CloneUtils
+    // {
+    //     public static T CloneJson<T>(this T source)
+    //     {            
+    //         // Don't serialize a null object, simply return the default for that object
+    //         if (Object.ReferenceEquals(source, null))
+    //         {
+    //             return default(T);
+    //         }
+
+    //         // initialize inner objects individually
+    //         // for example in default constructor some list property initialized with some values,
+    //         // but in 'source' these items are cleaned -
+    //         // without ObjectCreationHandling.Replace default constructor values will be added to result
+    //         var deserializeSettings = new JsonSerializerSettings {ObjectCreationHandling = ObjectCreationHandling.Replace};
+
+    //         return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(source), deserializeSettings);
+    //     }
+    // }
+    
 }

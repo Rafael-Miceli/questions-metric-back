@@ -23,7 +23,7 @@ namespace question_metrics_domain
         public string Name { get; }
         public DateTime Date { get; }
         public IEnumerable<Question> Questions { get; }
-        public ExamMetrics ExamMetrics => new ExamMetrics(new List<Exam>{this});
+        public ExamMetrics ExamMetrics => new ExamMetrics(new List<Exam>{this});        
     }
 
     public class ExamMetrics
@@ -43,5 +43,6 @@ namespace question_metrics_domain
                                                                                             .OrderByDescending(q => q.Count())
                                                                                             .Select(q => (q.Key, q.Count()));
 
-    }
+    }   
+
 }

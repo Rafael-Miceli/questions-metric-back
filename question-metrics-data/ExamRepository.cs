@@ -25,15 +25,9 @@ namespace question_metrics_data
 
         private static List<Exam> _exams = new List<Exam>();
 
-        public async Task<Result> Delete(string examName, DateTime examDate)
-        {
-            return Result.Fail("Não implementado");
-        }
+        public async Task<Result> Delete(string examName, DateTime examDate) => Result.Fail("Não implementado");
 
-        public async Task<IEnumerable<Exam>> GetAll()
-        {
-            return _exams;
-        }
+        public async Task<IEnumerable<Exam>> GetAll() => _exams;
 
         public async Task<Result<Exam>> Insert(Exam exam)
         {
@@ -42,9 +36,6 @@ namespace question_metrics_data
             return Result.Ok(exam);
         }
 
-        public async Task<Exam> GetExamById(string examId)
-        {
-            return _exams.FirstOrDefault(e => e.Id == examId);
-        }
+        public async Task<Exam> GetExamById(string examId) => _exams.FirstOrDefault(e => e.Id == examId);
     }
 }
