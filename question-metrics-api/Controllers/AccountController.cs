@@ -111,6 +111,9 @@ namespace question_metrics_api.Controllers
         {
             User userInDatabase = await _userRepository.FindById(id);
 
+            if (userInDatabase == null)
+                return NotFound();
+
             return Ok(userInDatabase);
         }
 
@@ -119,6 +122,9 @@ namespace question_metrics_api.Controllers
         public async Task<IActionResult> GetByEmail(string email)
         {
             User userInDatabase = await _userRepository.FindByEmail(email);
+
+            if (userInDatabase == null)
+                return NotFound();
 
             return Ok(userInDatabase);
         }
