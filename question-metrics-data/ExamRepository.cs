@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
+using MongoDB.Driver;
 using question_metrics_domain;
 using question_metrics_domain.Common;
 using question_metrics_domain.Interfaces;
@@ -31,6 +33,21 @@ namespace question_metrics_data
 
         public async Task<Result<Exam>> Insert(Exam exam)
         {
+            string connectionString = @"";
+            
+            MongoClientSettings settings = MongoClientSettings.FromUrl(
+                new MongoUrl(connectionString)
+            );
+
+            settings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
+            var mongoClient = new MongoClient(settings);
+
+            string dbName = "Tasks";
+            string collectionName = "exams";
+
+            var database = mongoClient.GetDatabase(dbName);
+            var todoTaskCollection = database.GetCollection<Exam>(collectionName);
+
             _exams.Add(exam);
 
             return Result.Ok(exam);
