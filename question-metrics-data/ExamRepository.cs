@@ -42,7 +42,7 @@ namespace question_metrics_data
             settings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
             var mongoClient = new MongoClient(settings);
 
-            string dbName = "Tasks";
+            string dbName = "QuestionMetrics";
             string collectionName = "exams";
 
             var database = mongoClient.GetDatabase(dbName);
