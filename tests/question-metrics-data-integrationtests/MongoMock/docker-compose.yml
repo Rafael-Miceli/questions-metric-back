@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  mongo-pricesotre:
+  mongo-questionmetrics:
     image: rafaelmiceli/mongo-questionmetrics:latest
     build: .
     ports: 
