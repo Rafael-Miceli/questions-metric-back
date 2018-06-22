@@ -3,56 +3,61 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
+
 using MongoDB.Driver;
+
 using question_metrics_domain;
 using question_metrics_domain.Common;
 using question_metrics_domain.Interfaces;
 
-namespace question_metrics_data
-{
-    public class ExamRepository : IExamRepo
-    {
-        public ExamRepository()
-        {
-            _exams.Add(
-                new Exam("TJ Rio Grand do Sul", 
-                new DateTime(2018, 04, 29),
-                new List<Question>{
-                    new Question(1, new CorrectAnswer()),
-                    new Question(2, new CorrectAnswer()),
-                    new Question(3, new WrongAnswer(ReasonIsWrong.NotAnswered))
-                })
-            );
+namespace question_metrics_data {
+    public class ExamRepository : IExamRepo {
+
+        private IMongoDatabase _mongoDb;
+        private IMongoCollection<Exam> _exams { get; set; }
+        private readonly string _connectionString = string.Empty;
+
+        public ExamRepository(IConfiguration configuration) {
+            _connectionString = configuration.GetConnectionString("QuestionMetrics");
+            InitializeMongoDatabase();
+            _exams = _mongoDb.GetCollection<Exam>("exams");
         }
 
-        private static List<Exam> _exams = new List<Exam>();
-
-        public async Task<Result> Delete(string examName, DateTime examDate) => Result.Fail("Não implementado");
-
-        public async Task<IEnumerable<Exam>> GetAll() => _exams;
-
-        public async Task<Result<Exam>> Insert(Exam exam)
+        private void InitializeMongoDatabase()
         {
-            string connectionString = @"";
-            
-            MongoClientSettings settings = MongoClientSettings.FromUrl(
-                new MongoUrl(connectionString)
-            );
+            try
+            {                
+                //var client = new MongoClient("mongodb://mongo:27017");                
+                //var client = new MongoClient("mongodb://192.168.99.100:27017");
+                //var client = new MongoClient("mongodb://localhost:27017");
 
-            settings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
-            var mongoClient = new MongoClient(settings);
+                MongoClientSettings settings = MongoClientSettings.FromUrl(
+                    new MongoUrl(_connectionString)
+                );
 
-            string dbName = "QuestionMetrics";
-            string collectionName = "exams";
+                settings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
 
-            var database = mongoClient.GetDatabase(dbName);
-            var todoTaskCollection = database.GetCollection<Exam>(collectionName);
+                var client = new MongoClient(settings);
+                _mongoDb = client.GetDatabase("QuestionMetrics");
+            }
+            catch (Exception ex) 
+            { 
+                Console.WriteLine(ex.Message);
+                _mongoDb = null; 
+            }
+        }
+        
+        public async Task<Result> Delete(string examName, DateTime examDate)=> Result.Fail("Não implementado");
 
-            _exams.Add(exam);
+        public async Task<IEnumerable<Exam>> GetAll()=> await _exams.Find(_ => true).ToListAsync();
+
+        public async Task<Result<Exam>> Insert(Exam exam) {
+
+            await _exams.InsertOneAsync(exam);
 
             return Result.Ok(exam);
         }
 
-        public async Task<Exam> GetExamById(string examId) => _exams.FirstOrDefault(e => e.Id == examId);
+        public async Task<Exam> GetExamById(string examId)=> await _exams.Find(e => e.Id == examId).FirstOrDefaultAsync();
     }
 }
