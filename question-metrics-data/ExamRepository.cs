@@ -4,6 +4,8 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Configuration;
+
 using MongoDB.Driver;
 
 using question_metrics_domain;
@@ -27,8 +29,7 @@ namespace question_metrics_data {
         {
             try
             {                
-                //var client = new MongoClient("mongodb://mongo:27017");                
-                //var client = new MongoClient("mongodb://192.168.99.100:27017");
+                //var client = new MongoClient("mongodb://mongo:27017");
                 //var client = new MongoClient("mongodb://localhost:27017");
 
                 MongoClientSettings settings = MongoClientSettings.FromUrl(
