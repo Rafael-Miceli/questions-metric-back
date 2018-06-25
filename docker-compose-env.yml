@@ -12,3 +12,5 @@ services:
       - "27017:27017"
   
 #docker-compose -f docker-compose-env.yml up --build
+#Set environment variable ps - $env:ASPNETCORE_ENVIRONMENT = "Development"
+#Get environment variable ps - Get-ChildItem Env: or Get-ChildItem Env:ASPNETCORE_ENVIRONMENT
