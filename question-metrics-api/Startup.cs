@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,7 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
+using MongoDB.Driver;
 using Newtonsoft.Json;
 
 using question_metrics_data;
@@ -42,6 +43,7 @@ namespace question_metrics_api {
                 c.DescribeAllEnumsAsStrings();
             });
 
+            services.AddMongo(Configuration.GetConnectionString("QuestionMetrics"));
             services.AddTransient<IExamRepo, ExamRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
         }
@@ -87,6 +89,22 @@ namespace question_metrics_api {
             });
 
             app.UseMvc();
+        }
+    }
+
+    public static class MongoSupport
+    {
+        public static void AddMongo(this IServiceCollection services, string connectionString)
+        {
+            MongoClientSettings settings = MongoClientSettings.FromUrl(
+                    new MongoUrl(connectionString)
+                );
+
+                settings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
+
+                var client = new MongoClient(settings);
+
+            services.AddSingleton(client);
         }
     }
 }

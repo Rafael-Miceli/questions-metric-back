@@ -19,31 +19,10 @@ namespace question_metrics_data {
         private IMongoCollection<ExamDataDto> _exams { get; set; }
         private readonly string _connectionString = string.Empty;
 
-        public ExamRepository(IConfiguration configuration) {
-            _connectionString = configuration.GetConnectionString("QuestionMetrics");
-            InitializeMongoDatabase();
+        public ExamRepository(MongoClient client) {
+            _mongoDb = client.GetDatabase("QuestionMetrics");
             _exams = _mongoDb.GetCollection<ExamDataDto>("exams");
         }
-
-        private void InitializeMongoDatabase() {
-            try {
-                //var client = new MongoClient("mongodb://mongo:27017");
-                //var client = new MongoClient("mongodb://localhost:27017");
-
-                MongoClientSettings settings = MongoClientSettings.FromUrl(
-                    new MongoUrl(_connectionString)
-                );
-
-                settings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
-
-                var client = new MongoClient(settings);
-                _mongoDb = client.GetDatabase("QuestionMetrics");
-            } catch (Exception ex) {
-                Console.WriteLine(ex.Message);
-                _mongoDb = null;
-            }
-        }
-
         public async Task<Result> Delete(string examName, DateTime examDate)=> Result.Fail("Não implementado");
 
         public async Task<IEnumerable<Exam>> GetAll()=> (await _exams.Find(_ => true).ToListAsync()).ToExams();
