@@ -11,14 +11,16 @@ namespace question_metrics_domain {
             string password, 
             string email,
             DateTime birth,
-            [AllowNull] string id = "") {
+            [AllowNull] string id = "",
+            [AllowNull] List<Exam> exams = null) {
                 
             Name = name;
             Password = password;
             Email = email;
             Birth = birth;
 
-            TookedExams = new List<Exam> ();
+            if(exams == null)
+                TookedExams = new List<Exam> ();
             
             if (string.IsNullOrEmpty(id))
                 id = Guid.NewGuid().ToString();

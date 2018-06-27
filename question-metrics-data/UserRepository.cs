@@ -23,15 +23,16 @@ namespace question_metrics_data {
         }
 
         public async Task<User> FindById(string id) {
-            return _users.Find(_ => true).FirstOrDefaultAsync(u => u.Id == id);
+            return (await _users.Find(u => u.Id == id).FirstOrDefaultAsync())?.ToUser();
         }
 
         public async Task<string> Insert(User newUser) {
-            await _users.InsertOneAsync(newUser.ToUserData());
+            await _users.InsertOneAsync(newUser.ToUserDataDto());
             return newUser.Id;
         }
 
         public async Task UpdateUser(User userInDatabase) {
+            await _users.ReplaceOneAsync(u => u.Id == userInDatabase.Id, userInDatabase.ToUserDataDto());
             //_users.DeleteOneAsync(u => );
             //_users.Add(userInDatabase);
         }

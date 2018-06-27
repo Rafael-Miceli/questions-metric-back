@@ -37,13 +37,24 @@ namespace question_metrics_data
             return new CorrectAnswer();
         }
 
-        public static User ToUser(this UserDataDto user) {
-            
+        public static User ToUser(this UserDataDto userDataDto) {
+            return new User(
+                userDataDto.Name,
+                userDataDto.Password,
+                userDataDto.Email,
+                userDataDto.Birth,
+                userDataDto.Id,
+                userDataDto.TookedExams.ToExams().ToList()
+            );
         }
 
 
+        /// ---- ToDataDtos
 
 
+        public static IEnumerable<ExamDataDto> ToExamsDataDto(this IEnumerable<Exam> exams) {
+            return exams.Select(e => e.ToExamDataDto());
+        }
 
         public static ExamDataDto ToExamDataDto(this Exam exam) {
             return new ExamDataDto{
@@ -73,7 +84,14 @@ namespace question_metrics_data
         }
 
         public static UserDataDto ToUserDataDto(this User user) {
-            
+            return new UserDataDto {
+                Id = user.Id,
+                Name = user.Name,
+                Password = user.Password,
+                Email = user.Email,
+                Birth = user.Birth,
+                TookedExams = user.TookedExams.ToExamsDataDto()
+            };
         }
     }
 }
