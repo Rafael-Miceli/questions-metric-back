@@ -12,20 +12,20 @@ namespace question_metrics_domain {
             string email,
             DateTime birth,
             [AllowNull] string id = "",
-            [AllowNull] List<Exam> exams = null) {
+            [AllowNull] List<Exam> tookedExams = null) {
                 
             Name = name;
             Password = password;
             Email = email;
             Birth = birth;
+            TookedExams = tookedExams;
+            Id = id;
 
-            if(exams == null)
+            if(tookedExams == null)
                 TookedExams = new List<Exam> ();
             
             if (string.IsNullOrEmpty(id))
-                id = Guid.NewGuid().ToString();
-
-            Id = id;
+                id = Guid.NewGuid().ToString();            
         }
 
         public string Id { get; }
