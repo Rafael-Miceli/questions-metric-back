@@ -14,7 +14,7 @@ namespace question_metrics_data
             return new Exam(
                 examData.Name,
                 examData.Date,
-                examData.Questions.ToQuestions(),
+                examData.Questions.ToQuestions().ToList(),
                 examData.Id
             );
         }

@@ -6,7 +6,7 @@ using NullGuard;
 
 namespace question_metrics_domain {
     public class Exam {
-        public Exam(string name, DateTime date, IEnumerable<Question> questions, [AllowNull] string id = "") {
+        public Exam(string name, DateTime date, IList<Question> questions, [AllowNull] string id = "") {
             Name = name;
             Date = date;
             Questions = questions;
@@ -20,7 +20,7 @@ namespace question_metrics_domain {
         public string Id { get; set; }
         public string Name { get; }
         public DateTime Date { get; }
-        public IEnumerable<Question> Questions { get; }
+        public IList<Question> Questions { get; }
         public ExamMetrics ExamMetrics => new ExamMetrics(new List<Exam> { this });
     }
 

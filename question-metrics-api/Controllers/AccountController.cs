@@ -8,6 +8,7 @@ using question_metrics_api.Dtos;
 using question_metrics_domain;
 using question_metrics_domain.Interfaces;
 using Force.DeepCloner;
+using Serilog;
 
 namespace question_metrics_api.Controllers
 {
@@ -95,13 +96,12 @@ namespace question_metrics_api.Controllers
             if (!answerToUpdate.IsWrong)
             {
                 questionToUpdate.UpdateAnswer(new CorrectAnswer());
+                await _userRepository.UpdateUser(userInDatabase);
                 return NoContent();                    
             }  
 
-            questionToUpdate.UpdateAnswer(new WrongAnswer(answerToUpdate.ReasonIsWrong.MapToReason()));
-            
+            questionToUpdate.UpdateAnswer(new WrongAnswer(answerToUpdate.ReasonIsWrong.MapToReason()));            
             await _userRepository.UpdateUser(userInDatabase);
-
             return NoContent();
         }
 
