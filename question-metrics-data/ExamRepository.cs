@@ -25,15 +25,15 @@ namespace question_metrics_data
         }
         public async Task<Result> Delete(string examName, DateTime examDate)=> Result.Fail("Não implementado");
 
-        public async Task<IEnumerable<Exam>> GetAll()=> (await _exams.Find(_ => true).ToListAsync()).ToExams();
+        public async Task<IEnumerable<Exam>> GetAll()=> 
+            (await _exams.Find(_ => true).ToListAsync()).ToExams();
 
         public async Task<Result<Exam>> Insert(Exam exam) {
-
             await _exams.InsertOneAsync(exam.ToExamDataDto());
-
             return Result.Ok(exam);
         }
 
-        public async Task<Exam> GetExamById(string examId)=> (await _exams.Find(e => e.Id == examId).FirstOrDefaultAsync())?.ToExam();
+        public async Task<Exam> GetExamById(string examId)=> 
+            (await _exams.Find(e => e.Id == examId).FirstOrDefaultAsync())?.ToExam();
     }
 }
