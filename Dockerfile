@@ -14,9 +14,9 @@ COPY . .
 
 RUN dotnet test tests/question-metrics-domain-tests/question-metrics-domain-tests.csproj
 
-#Aplicar chamada a Sonar
-#7ed84e09a17a31e783fa8522d876e27fe4624977
 
+#Aplicar chamada a Sonar
+#RUN dotnet tool install --global dotnet-sonarscanner
 #RUN dotnet sonarscanner begin /k:"question-metrics-api" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="7ed84e09a17a31e783fa8522d876e27fe4624977"
 #RUN dotnet build
 #RUN dotnet sonarscanner end /d:sonar.login="7ed84e09a17a31e783fa8522d876e27fe4624977"
