@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <ProjectGuid>{63e1a3d4-1933-4f0e-9f34-f16b84af122e}</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,6 +27,6 @@
   <ItemGroup>
     <ProjectReference Include="..\question-metrics-domain\question-metrics-domain.csproj" />
     <ProjectReference Include="..\question-metrics-data\question-metrics-data.csproj" />
-  </ItemGroup>
+  </ItemGroup>  
 
 </Project>
