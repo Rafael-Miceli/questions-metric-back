@@ -17,7 +17,6 @@ namespace question_metrics_data
 
         private IMongoDatabase _mongoDb;
         private IMongoCollection<ExamDataDto> _exams { get; set; }
-        private readonly string _connectionString = string.Empty;
 
         public ExamRepository(MongoClient client) {
             _mongoDb = client.GetDatabase("QuestionMetrics");
