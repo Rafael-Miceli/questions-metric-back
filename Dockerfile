@@ -8,9 +8,12 @@ COPY question-metrics-domain/question-metrics-domain.csproj question-metrics-dom
 COPY tests/question-metrics-domain-tests/question-metrics-domain-tests.csproj tests/question-metrics-domain-tests/
 
 RUN dotnet restore tests/question-metrics-domain-tests
+RUN dotnet restore question-metrics-api/question-metrics-api.csproj
+
+COPY . .
+
 RUN dotnet test tests/question-metrics-domain-tests/question-metrics-domain-tests.csproj
 
-RUN dotnet restore question-metrics-api/question-metrics-api.csproj
 RUN dotnet publish question-metrics-api/question-metrics-api.csproj -c Release -o publish
 
 
