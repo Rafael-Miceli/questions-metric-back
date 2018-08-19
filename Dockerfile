@@ -16,6 +16,11 @@ RUN dotnet test tests/question-metrics-domain-tests/question-metrics-domain-test
 
 RUN dotnet publish question-metrics-api/question-metrics-api.csproj -c Release -o publish
 
+FROM microsoft/aspnetcore as runtime-env
+
+COPY --from=build-env src/question-metrics-api/publish .
+EXPOSE 80
+ENTRYPOINT [ "dotnet", "question-metrics-api.dll" ]
 
 
 
