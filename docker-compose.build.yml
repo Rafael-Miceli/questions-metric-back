@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  question-metrics-api:
+    image: questionmetrics.azurecr.io/backend/question-metrics-api:0.1
+    build: .
+    ports:
+      - "5000:5009"
+    environment:
+      - ConnectionStrings__QuestionMetrics=mongodb://mongo-questionmetrics:27017
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+  mongo-questionmetrics:
+    image: mongo
+    ports: 
+      - "27017:27017"
+  
+#docker-compose -f docker-compose-env.yml up --build
+#Set environment variable ps - $env:ASPNETCORE_ENVIRONMENT = "Development"
+#Get environment variable ps - Get-ChildItem Env: or Get-ChildItem Env:ASPNETCORE_ENVIRONMENT
