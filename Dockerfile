@@ -1,5 +1,12 @@
 FROM microsoft/dotnet:2.1-sdk as build-env
 
+RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y openjdk-8-jre
+
+#Install Sonar
+RUN dotnet tool install -g dotnet-sonarscanner
+
+ENV PATH="${PATH}:/root/.dotnet/tools"
+
 WORKDIR /src
 
 COPY question-metrics-api/question-metrics-api.csproj question-metrics-api/
@@ -15,20 +22,15 @@ COPY . .
 #Run tests
 RUN dotnet test tests/question-metrics-domain-tests/question-metrics-domain-tests.csproj
 
-#Begin Sonar
-RUN dotnet tool install -g dotnet-sonarscanner
-
-ENV PATH="${PATH}:/root/.dotnet/tools"
-
-RUN dotnet sonarscanner begin /k:"question-metrics-api" /d:sonar.host.url="http://sonarqube:9000" /d:sonar.login="7ed84e09a17a31e783fa8522d876e27fe4624977"
+RUN dotnet sonarscanner begin /k:"question-metrics-api" /d:sonar.organization="rafael-miceli-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="8dc982d90a4205b1df9aab2d608055ca049fddb2"
 RUN dotnet build
-RUN dotnet sonarscanner end /d:sonar.login="7ed84e09a17a31e783fa8522d876e27fe4624977"
+RUN dotnet sonarscanner end /d:sonar.login="8dc982d90a4205b1df9aab2d608055ca049fddb2"
 #End Sonar
 
 RUN dotnet publish question-metrics-api/question-metrics-api.csproj -c Release -o publish
 
-# FROM microsoft/aspnetcore as runtime-env
+FROM microsoft/dotnet:2.1-aspnetcore-runtime as runtime-env
 
-# COPY --from=build-env src/question-metrics-api/publish .
-# EXPOSE 80
-# ENTRYPOINT [ "dotnet", "question-metrics-api.dll" ]
+COPY --from=build-env src/question-metrics-api/publish .
+EXPOSE 80
+ENTRYPOINT [ "dotnet", "question-metrics-api.dll" ]
