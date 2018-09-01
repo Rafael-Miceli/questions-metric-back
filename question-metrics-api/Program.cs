@@ -41,7 +41,7 @@ namespace question_metrics_api
                             MailServer = "localhost",
                             Port = 1025
                         }))
-                    .Filter.ByExcluding(c => c.MessageTemplate.Text.Contains("swagger")))
+                    .Filter.ByExcluding(c => c.Properties.Any(p => p.Value.ToString().Contains("swagger"))))
                 .Build();
     }
 }
