@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using NullGuard;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace question_metrics_domain {
     public class User {
@@ -37,5 +39,14 @@ namespace question_metrics_domain {
         public IList<Exam> TookedExams { get; }
 
         public async Task AddExam (Exam exam) => TookedExams.Add (exam);
+    }
+
+    public static class Hasher
+    {
+        public static string ToHash(string value)
+        {
+
+
+        }
     }
 }

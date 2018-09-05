@@ -7,6 +7,7 @@ namespace question_metrics_domain.Interfaces
         Task<User> FindByEmail(string email);
         Task<string> Insert(User newUser);
         Task<User> FindById(string id);
+        Task<User> FindById(string username, string password);
         Task UpdateUser(User userInDatabase);
     }
 }

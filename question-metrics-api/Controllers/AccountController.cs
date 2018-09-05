@@ -49,6 +49,19 @@ namespace question_metrics_api.Controllers
 
         //Cenários de teste
         //* Identificador de usuário é o e-mail */
+        [HttpPost]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        {
+            User userInDatabase = await _userRepository.FindByLoginAndPassword(loginDto.Login, loginDto.Password);
+
+            if (userInDatabase != null)
+                return Ok(userInDatabase);
+
+            return Unauthorized();
+        }
+
+        //Cenários de teste
+        //* Identificador de usuário é o e-mail */
         //?Se usuário ja existir na base com mesmo e-mail
         [HttpPut]
         [Route("AddTookedExam/{userId}/{examId}")]
