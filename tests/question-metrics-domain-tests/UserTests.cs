@@ -18,6 +18,7 @@ namespace question_metrics_domain_tests
             );
 
             Assert.NotEqual("123", user.Password);
+            Assert.Equal("CvUbEnePg3NZMrYQJsD/O/r/jLI=", user.Password);
         }
         
     }

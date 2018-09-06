@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using NullGuard;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Text;
 
 namespace question_metrics_domain {
     public class User {
@@ -45,7 +46,9 @@ namespace question_metrics_domain {
     {
         public static string ToHash(this string value)
         {
-            return Convert.ToBase64String(KeyDerivation.Pbkdf2(value, new byte[1], KeyDerivationPrf.HMACSHA1, 100, 256/8));
+            var hm = new HMACSHA1(Encoding.ASCII.GetBytes("chave"));
+            return Convert.ToBase64String(hm.ComputeHash(Encoding.ASCII.GetBytes(value)));
+            // return Convert.ToBase64String(KeyDerivation.Pbkdf2(value, Encoding.ASCII.GetBytes("teste"), KeyDerivationPrf.HMACSHA1, 100, 256/8));
         }
     }
 }
