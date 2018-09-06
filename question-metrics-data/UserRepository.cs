@@ -32,7 +32,7 @@ namespace question_metrics_data {
         public async Task UpdateUser(User userInDatabase)=>
             await _users.ReplaceOneAsync(u => u.Id == userInDatabase.Id, userInDatabase.ToUserDataDto());
 
-        public async Task<User> FindById(string email, string password) =>
+        public async Task<User> FindByLoginAndPassword(string email, string password) =>
             (await _users.Find(u => u.Email.ToLower() == email.ToLower() && u.Password == password.ToHash()).FirstOrDefaultAsync())?.ToUser();
         
     }
