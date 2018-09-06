@@ -17,7 +17,7 @@ namespace question_metrics_domain {
             [AllowNull] List<Exam> tookedExams = null) {
                 
             Name = name;
-            Password = password;
+            Password = password.ToHash();
             Email = email;
             Birth = birth;
             TookedExams = tookedExams;
@@ -43,10 +43,9 @@ namespace question_metrics_domain {
 
     public static class Hasher
     {
-        public static string ToHash(string value)
+        public static string ToHash(this string value)
         {
-
-
+            return Convert.ToBase64String(KeyDerivation.Pbkdf2(value, new byte[1], KeyDerivationPrf.HMACSHA1, 100, 256/8));
         }
     }
 }
