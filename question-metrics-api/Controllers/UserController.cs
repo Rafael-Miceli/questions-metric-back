@@ -13,28 +13,62 @@ using Serilog;
 namespace question_metrics_api.Controllers
 {
     [Route("api/[controller]")]
-    public class AccountController : Controller
+    public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
         private readonly IExamRepo _examRepo;
 
-        public AccountController(IUserRepository userRepository, IExamRepo examRepo)
+        public UserController(IUserRepository userRepository, IExamRepo examRepo)
         {
             _userRepository = userRepository;
             _examRepo = examRepo;
         }
+
         //Cenários de teste
         //* Identificador de usuário é o e-mail */
+        //?Se usuário ja existir na base com mesmo e-mail
         [HttpPost]
-        [Route("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> RegisterUser([FromBody] UserDto userDto)
         {
-            User userInDatabase = await _userRepository.FindByLoginAndPassword(loginDto.Login, loginDto.Password);
+            var newUser = new User(
+                userDto.Name,
+                userDto.Password,
+                userDto.Email,
+                userDto.Birth
+            );
+
+            User userInDatabase = await _userRepository.FindByEmail(newUser.Email);
 
             if (userInDatabase != null)
-                return Ok(userInDatabase);
+                return StatusCode(409, "Usuário já cadastrado");
 
-            return Unauthorized();
+            await _userRepository.Insert(newUser);
+
+            return Created("", newUser.Id);
+        }
+
+        [HttpGet]
+        [Route("id/{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            User userInDatabase = await _userRepository.FindById(id);
+
+            if (userInDatabase == null)
+                return NotFound();
+
+            return Ok(userInDatabase);
+        }
+
+        [HttpGet]
+        [Route("email/{email}")]
+        public async Task<IActionResult> GetByEmail(string email)
+        {
+            User userInDatabase = await _userRepository.FindByEmail(email);
+
+            if (userInDatabase == null)
+                return NotFound();
+
+            return Ok(userInDatabase);
         }
     }
 
