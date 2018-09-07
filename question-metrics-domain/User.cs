@@ -44,11 +44,7 @@ namespace question_metrics_domain {
 
     public static class Hasher
     {
-        public static string ToHash(this string value)
-        {
-            var hm = new HMACSHA1(Encoding.ASCII.GetBytes("chave"));
-            return Convert.ToBase64String(hm.ComputeHash(Encoding.ASCII.GetBytes(value)));
-            // return Convert.ToBase64String(KeyDerivation.Pbkdf2(value, Encoding.ASCII.GetBytes("teste"), KeyDerivationPrf.HMACSHA1, 100, 256/8));
-        }
+        public static string ToHash(this string value) =>
+            Convert.ToBase64String(KeyDerivation.Pbkdf2(value, Encoding.ASCII.GetBytes("teste"), KeyDerivationPrf.HMACSHA1, 100, 256/8));
     }
 }
