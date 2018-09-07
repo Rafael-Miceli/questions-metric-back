@@ -9,10 +9,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+
 using Newtonsoft.Json;
 
 using question_metrics_data;
@@ -23,8 +25,7 @@ using Serilog;
 
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace question_metrics_api
-{
+namespace question_metrics_api {
     public class Startup {
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
@@ -35,7 +36,8 @@ namespace question_metrics_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddCors();
-            services.AddMvc();
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new Info { Title = "Exams Metrics", Version = "v1" });
@@ -58,6 +60,8 @@ namespace question_metrics_api
                 .AllowAnyMethod()
                 .AllowAnyOrigin()
             );
+
+            app.UseHttpsRedirection();
 
             app.UseSwagger();
 

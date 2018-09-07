@@ -18,10 +18,10 @@ namespace question_metrics_api
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            CreateWebHostBuild(args).Build().Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuild(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
@@ -41,7 +41,7 @@ namespace question_metrics_api
                             MailServer = "localhost",
                             Port = 1025
                         }))
-                    .Filter.ByExcluding(c => c.Properties.Any(p => p.Value.ToString().Contains("swagger"))))
-                .Build();
+                    .Filter.ByExcluding(c => c.Properties.Any(p => p.Value.ToString().Contains("swagger")))
+                );
     }
 }
