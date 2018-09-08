@@ -61,7 +61,7 @@ namespace question_metrics_api {
                 .AllowAnyOrigin()
             );
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseSwagger();
 
