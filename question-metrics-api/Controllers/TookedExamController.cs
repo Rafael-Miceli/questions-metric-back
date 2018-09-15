@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Force.DeepCloner;
 using Microsoft.AspNetCore.Mvc;
-using question_metrics_api.Dtos;
+using question_metrics_api.ViewModels;
 using question_metrics_domain;
 using question_metrics_domain.Interfaces;
 
@@ -48,7 +48,7 @@ namespace question_metrics_api.Controllers
         //?Se usuário ja existir na base com mesmo e-mail
         [HttpPut]
         [Route("{userId}/{examId}")]
-        public async Task<IActionResult> UpdateAnswer(string userId, string examId, [FromBody]AnswerToUpdateDto answerToUpdate)
+        public async Task<IActionResult> UpdateAnswer(string userId, string examId, [FromBody]AnswerToUpdateViewModel answerToUpdate)
         {
             User userInDatabase = await _userRepository.FindById(userId);
 

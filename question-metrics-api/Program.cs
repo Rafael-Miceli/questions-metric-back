@@ -29,7 +29,7 @@ namespace question_metrics_api
                     .Enrich.FromLogContext()
                     .Enrich.WithProperty("Stack", "QuestionMetrics")
                     .Enrich.WithProperty("Service", "Question Metrics API")
-                    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                     .WriteTo.Console()
                     .WriteTo.Logger(lc => 
                         lc.MinimumLevel.Error()

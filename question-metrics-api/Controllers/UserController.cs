@@ -3,8 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using question_metrics_api.Controllers.Dtos;
-using question_metrics_api.Dtos;
+using question_metrics_api.ViewModels;
 using question_metrics_domain;
 using question_metrics_domain.Interfaces;
 using Force.DeepCloner;
@@ -28,7 +27,7 @@ namespace question_metrics_api.Controllers
         //* Identificador de usuário é o e-mail */
         //?Se usuário ja existir na base com mesmo e-mail
         [HttpPost]
-        public async Task<IActionResult> RegisterUser([FromBody] UserDto userDto)
+        public async Task<IActionResult> RegisterUser([FromBody] ViewModels.CreateUserViewModel userDto)
         {
             var newUser = new User(
                 userDto.Name,
